@@ -4,6 +4,7 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import threading
 import time
+import cv2  # Missing import for cv2 (used in update function)
 
 from cam import CameraDetection
 from servo_controller import ServoController
@@ -30,7 +31,14 @@ history_box = tk.Listbox(dashboard, width=40, height=10)
 history_box.pack(pady=(10, 0))
 
 def update():
-    frame, detected_type = camera.detect_frame()
+    result = camera.detect_frame()
+    if result is None:
+        print("[Warning] detect_frame() returned None")
+        root.after(500, update)
+        return
+
+    frame, detected_type = result
+
     if frame is not None:
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         img = Image.fromarray(rgb_frame)
@@ -64,3 +72,4 @@ exit_button.pack(pady=10)
 
 update()
 root.mainloop()
+
