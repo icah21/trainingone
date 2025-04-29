@@ -26,7 +26,7 @@ class CameraDetection:
         self.min_match_threshold = 10.0
 
         # Start camera
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(1)
         time.sleep(0.2)
 
         # For UI
